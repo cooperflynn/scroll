@@ -38,9 +38,36 @@ window.addEventListener("scroll", function () {
     topLink.classList.add("show-link");
   } else {
     topLink.classList.remove("show-link");
-    ``;
   }
 });
 
 // ********** smooth scroll ************
 // select links
+const scrollLinks = document.querySelectorAll(".scroll-link");
+
+scrollLinks.forEach(function (link) {
+  link.addEventListener("click", function (e) {
+    // prevent default
+    e.preventDefault();
+    // navigate to specific spot
+    //use slice to remove hashtag
+    const id = e.currentTarget.getAttribute("href").slice(1);
+    const element = document.getElementById(id);
+    //calculate the heights
+    const navHeight = navbar.getBoundingClientRect().height;
+    const containerHeight = linksContainer.getBoundingClientRect().height;
+    const fixedNav = navbar.classList.contains("fixed-nav");
+    let position = element.offsetTop - navHeight;
+    if (!fixedNav) {
+      position = position - navHeight;
+    }
+    if (navHeight > 82) {
+      position = position + containerHeight;
+    }
+    window.scrollTo({
+      left: 0,
+      top: position,
+    });
+    linksContainer.style.height = 0;
+  });
+});
